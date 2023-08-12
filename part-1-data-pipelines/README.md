@@ -65,6 +65,7 @@ The requirements of this project is to have the processing of data done every ho
 
 After running the preprocess code for the first time, the directory should look something like the following:
 
+```
 part-1-data-pipelines/
 │ README.md
 │ preprocess.py
@@ -79,3 +80,4 @@ part-1-data-pipelines/
 ├── successful-applications/
 │ processed_data_file1.csv
 │ processed_data_file2.csv
+```
