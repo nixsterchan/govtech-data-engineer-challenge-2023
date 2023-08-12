@@ -57,7 +57,8 @@ The requirements of this project is to have the processing of data done every ho
 2. Run the preprocessing script hourly: 
     - include the following cron expression within your crontab:
     ```bash
-    0 * * * * cd /path/to/your/govtech-data-engineer-test/part-1-data-pipelines && ./run_script.sh
+    # Make sure to change the path within the <>
+    0 * * * * cd </path/to/your/govtech-data-engineer-test/part-1-data-pipelines> && ./run_script.sh
     ```
 3. Processed datasets will be saved in the `successful-applications` and `failed-applications` folders.
 
