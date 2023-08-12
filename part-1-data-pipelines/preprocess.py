@@ -17,7 +17,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Data ingest and output points
-INGESTION_DATA_FOLDER = '../ingestion-data/'
+INGESTION_DATA_FOLDER = 'ingestion-data/'
 SUCCESSFUL_APPS_FOLDER = 'successful-applications/'
 FAILED_APPS_FOLDER = 'failed-applications/'
 
@@ -58,9 +58,10 @@ def main():
     for f_name in csv_file_names:
         f_path = os.path.join(INGESTION_DATA_FOLDER, f_name)
         logger.info(f'Working on file: {f_path}')
+
         # Output file paths
-        success_out_path = os.path.join(SUCCESSFUL_APPS_FOLDER, f_name)
-        failed_out_path = os.path.join(FAILED_APPS_FOLDER, f_name)
+        success_out_path = os.path.join(SUCCESSFUL_APPS_FOLDER, f'processed_{f_name}')
+        failed_out_path = os.path.join(FAILED_APPS_FOLDER, f'processed_{f_name}')
 
         try:
             df = pd.read_csv(f_path, header=0, index_col=False)
@@ -105,6 +106,7 @@ def main():
         except Exception as e:
             logger.error(f'Ran into an issue while processing present dataframe. Moving to next file.')
         
+        # Write out the success and failed dataframes
         try:
             df_success.to_csv(success_out_path, header=True, index=False)
             df_failed.to_csv(failed_out_path, header=True, index=False)
@@ -114,7 +116,6 @@ def main():
             logger.error(f'Ran into an issue while writing out success and failed dataframes. Moving to next file.')
         
     return None
-
 
 if __name__ == "__main__":
     main()
