@@ -20,6 +20,8 @@ logger = logging.getLogger(__name__)
 INGESTION_DATA_FOLDER = '../ingestion-data/'
 SUCCESSFUL_APPS_FOLDER = 'successful-applications/'
 FAILED_APPS_FOLDER = 'failed-applications/'
+
+# Validation variables
 DOB_REQUIRED_FORMAT = '%Y%m%d'
 EXPECTED_MOBILE_NO_LEN = 8
 EMAIL_PATTERN = r'@.*\.(com|net)'
@@ -55,47 +57,61 @@ def main():
 
     for f_name in csv_file_names:
         f_path = os.path.join(INGESTION_DATA_FOLDER, f_name)
+        logger.info(f'Working on file: {f_path}')
+        # Output file paths
         success_out_path = os.path.join(SUCCESSFUL_APPS_FOLDER, f_name)
         failed_out_path = os.path.join(FAILED_APPS_FOLDER, f_name)
 
-        df = pd.read_csv(f_path, header=0, index_col=False)
-        print(df.shape)
+        try:
+            df = pd.read_csv(f_path, header=0, index_col=False)
+            logger.info(f'Dataframe shape: {df.shape}.')
+        except Exception as e:
+            logger.error(f'Ran into an issue while attempting to read dataframe. Moving to next file.')
 
-        # Convert date of birth to preferred format
-        df['conv_date'] = pd.to_datetime(df['date_of_birth'], errors='coerce')
-        df['date_of_birth'] = df['conv_date'].dt.strftime(DOB_REQUIRED_FORMAT)
+        if df.shape[0] == 0: continue
 
-        # Get the age for comparison
-        df['age'] = (DATE_REFERENCE_POINT - df['conv_date']).astype('<m8[Y]')
-        df['is_valid_email'] = df['email'].str.contains(EMAIL_PATTERN, regex=True)
-        df['above_18'] = df['age'] >= 18
+        # Perform preprocessing tasks
+        try:
+            # Convert date_of_birth to preferred format
+            df['conv_date'] = pd.to_datetime(df['date_of_birth'], errors='coerce')
+            df['date_of_birth'] = df['conv_date'].dt.strftime(DOB_REQUIRED_FORMAT)
 
-        df['is_failed_application'] = (~df['above_18']) | (~df['is_valid_email']) | (df['name'].isnull()) | (df['mobile_no'].str.len() != EXPECTED_MOBILE_NO_LEN)
+            # Check age for validation
+            df['age'] = (DATE_REFERENCE_POINT - df['conv_date']).astype('<m8[Y]')
+            df['above_18'] = df['age'] >= 18
+
+            # Check if email is valid
+            df['is_valid_email'] = df['email'].str.contains(EMAIL_PATTERN, regex=True)
+
+            # Mark out rows that failed the requirements (i.e. not above 18, non valid email, number!=8, null name)
+            df['is_failed_application'] = (~df['above_18']) | (~df['is_valid_email']) | (df['name'].isnull()) | (df['mobile_no'].str.len() != EXPECTED_MOBILE_NO_LEN)
+            df = df.drop(columns=['age', 'is_valid_email', 'conv_date'])
+
+            # Split into successful and failed dfs
+            df_success = df[df['is_failed_application'] != True].drop(columns='is_failed_application')
+            df_failed = df[df['is_failed_application']].drop(columns='is_failed_application')
+
+            logger.info(f'Dataframe split into successful and failed applications.')
+
+            # Split name into first_name and last_name
+            df_success[['first_name', 'last_name']] = df['name'].str.split(n=1, expand=True)
+
+            # Create 'membership_id' column that follows the formula <last_name>_<SHA256hash(bdate)[-5:] 
+            df_success['membership_id'] = df_success.apply(lambda row: f"{row['last_name']}_{hashlib.sha256(row['date_of_birth'].encode()).hexdigest()[-5:]}", axis=1)
+            df_success = df_success.drop(columns=['name'])
+            
+            logger.info(f'Successful applications sucessfully processed.')
+
+        except Exception as e:
+            logger.error(f'Ran into an issue while processing present dataframe. Moving to next file.')
         
-        df = df.drop(columns=['age', 'is_valid_email', 'conv_date'])
+        try:
+            df_success.to_csv(success_out_path, header=True, index=False)
+            df_failed.to_csv(failed_out_path, header=True, index=False)
 
-        df_success = df[df['is_failed_application'] != True].drop(columns='is_failed_application')
-        df_failed = df[df['is_failed_application']].drop(columns='is_failed_application')
-
-
-
-        df_success[['first_name', 'last_name']] = df['name'].str.split(n=1, expand=True)
-        df_success['membership_id'] = df_success.apply(lambda row: f"{row['last_name']}_{hashlib.sha256(row['date_of_birth'].encode()).hexdigest()[-5:]}", axis=1)
-
-        df_success = df_success.drop(columns=['name'])
-        # Split up dataframe into successful and unsuccessful applications based on the name
-        # df = df.apply(lambda row: row[''])
-        # Filter by mobile number
-
-        # Filter by age
-
-        # Filter by valid email
-
-        # Output
-        df_success.to_csv(success_out_path, header=True, index=False)
-        df_failed.to_csv(failed_out_path, header=True, index=False)
-        
-
+            logger.info(f'Success and failed application dataframes were successfully written out.')
+        except Exception as e:
+            logger.error(f'Ran into an issue while writing out success and failed dataframes. Moving to next file.')
         
     return None
 
