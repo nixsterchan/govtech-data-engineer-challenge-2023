@@ -67,7 +67,7 @@ def main():
             df = pd.read_csv(f_path, header=0, index_col=False)
             logger.info(f'Dataframe shape: {df.shape}.')
         except Exception as e:
-            logger.error(f'Ran into an issue while attempting to read dataframe. Moving to next file.')
+            logger.error(f'Ran into an issue while attempting to read dataframe.\n{e}\nMoving to next file.')
 
         if df.shape[0] == 0: continue
 
@@ -94,17 +94,17 @@ def main():
 
             logger.info(f'Dataframe split into successful and failed applications.')
 
-            # Split name into first_name and last_name
-            df_success[['first_name', 'last_name']] = df['name'].str.split(n=1, expand=True)
+            # Split name into first_name and last_name. Assumption made is that the name has more than 2 words in it.
+            df_success[['first_name', 'last_name']] = df['name'].str.strip().str.split(n=1, expand=True)
 
             # Create 'membership_id' column that follows the formula <last_name>_<SHA256hash(bdate)[-5:] 
-            df_success['membership_id'] = df_success.apply(lambda row: f"{row['last_name']}_{hashlib.sha256(row['date_of_birth'].encode()).hexdigest()[-5:]}", axis=1)
+            df_success['membership_id'] = df_success.apply(lambda row: f"{row['last_name'].replace(' ', '_')}_{hashlib.sha256(row['date_of_birth'].encode()).hexdigest()[-5:]}", axis=1)
             df_success = df_success.drop(columns=['name'])
             
             logger.info(f'Successful applications sucessfully processed.')
 
         except Exception as e:
-            logger.error(f'Ran into an issue while processing present dataframe. Moving to next file.')
+            logger.error(f'Ran into an issue while processing present dataframe.\n{e}\nMoving to next file.')
         
         # Write out the success and failed dataframes
         try:
@@ -113,7 +113,7 @@ def main():
 
             logger.info(f'Success and failed application dataframes were successfully written out.')
         except Exception as e:
-            logger.error(f'Ran into an issue while writing out success and failed dataframes. Moving to next file.')
+            logger.error(f'Ran into an issue while writing out success and failed dataframes.\n{e}\nMoving to next file.')
         
     return None
 
