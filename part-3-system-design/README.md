@@ -16,5 +16,25 @@ For this section, I will be designing the data infrastructure of the given propo
     - S3
     - Glue
     - Athena
-    - Quicksight
+    - QuickSight
 
+## Tackling the requirements
+### Web application 1
+An EC2 hosted within a VPC can be used to run the web application, wherein user uploads can be uploaded to an S3 bucket via AWS SDK. (Utilize VPC Endpoint to route directly to the S3 bucket of choice)
+
+### Web application 2
+The web application hosting Kafka stream can be set up in another EC2 instance. This will allow the company's engineer who are required to self-manage the Kafka stream to have more control over the Kafka cluster. Similarly, the Kafka consumers can upload the image messages up to S3 bucket via AWS SDK. (Similarly, VPC Endpoint will be used)
+
+### Prepared code for image processing
+For the image processing that requires to be hosted on cloud, we deploy the code on Lambda where it will be event triggered by a PUT event into the S3 bucket containing the raw images, and output the processed images and respective metadata into another S3 bucket for processed data. (we could use 'images/' and 'metadata/' as prefixes in this output data to help with the BI portion later)
+
+Note: If the code that processes the images requires more than 10GB of RAM or more than 15mins of runtime, we would shift over to AWS Fargate instead.
+
+### Stored images/metadata 7 day purge
+Given that the raw image data and processed image and metadata exist within S3 buckets, we can simply set an S3 Lifecycle Policy rule to delete the items after 7 days. As it was not specified whether all or only certain data should be purged, we will be purging from all buckets. However if there is a need to delete only some of the data, we can use the S3 bucket prefixes to be more specific.
+
+### Business Intelligence
+To help the analysts out, we could use Glue, Athena and QuickSight.
+    1. Firstly we can run Glue crawlers to run through the processed data bucket to create tables in the Glue Catalog. Prefixes 'images/' and 'metadata/' might help us organize the data in S3 a little better for the crawlers.
+    2. Athena can be used to queriy the tables created in the Glue Catalog, perform any additional data transformation and create Views.
+    3. QuickSight will utilize the Views from Athena for visualization purposes,
