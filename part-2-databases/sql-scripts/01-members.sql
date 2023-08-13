@@ -1,5 +1,5 @@
 -- Create Members Table
-CREATE TABLE Members (
+CREATE TABLE IF NOT EXISTS Members (
     membership_id VARCHAR(100) PRIMARY KEY NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,

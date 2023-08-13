@@ -1,5 +1,5 @@
 -- Create Transactions Table
-CREATE TABLE Transactions (
+CREATE TABLE IF NOT EXISTS Transactions (
     transaction_id SERIAL PRIMARY KEY,
     membership_id VARCHAR REFERENCES Members(membership_id) NOT NULL,
     items_bought TEXT NOT NULL, 
