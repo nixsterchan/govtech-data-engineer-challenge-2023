@@ -66,6 +66,8 @@ One of the requirements of this project is to have the processing of data done e
     ```
 3. Processed datasets will be saved in the `successful-applications` and `failed-applications` folders.
 4. Loggings can be found inside logger.log file.
+5. For datasets that failed during the processing, their source file will be moved to the `unprocessed=data` folder.
+6. Likewise for datasets that went through the process successfully, their source file will be moved to the `marked-for-deletion-data` folder.
 
 ## Directory Structure
 
