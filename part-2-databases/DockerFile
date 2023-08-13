@@ -1,0 +1,8 @@
+FROM postgres:15.1-alpine
+
+LABEL author="Nigel Han"
+LABEL description="Postgres Image Used for Govtech Data Engineer Test Part 2"
+LABEL version="3.1"
+
+# Copy in SQL scripts for table and index creation
+COPY sql-scripts/*.sql /docker-entrypoint-initdb.d/
