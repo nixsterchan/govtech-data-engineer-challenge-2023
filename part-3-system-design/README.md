@@ -27,6 +27,7 @@ The architecture diagram can be found in the last section.
 ## Potential Cloud Services
 - VPC
 - EC2
+- SQS
 - Lambda
 - Fargate
 - S3
@@ -42,7 +43,7 @@ An EC2 hosted within a VPC (along with its subnets, security groups etc.) can be
 The web application hosting Kafka stream can be set up in another EC2 instance. This will allow the company's engineer who are required to self-manage the Kafka stream to have more control over the Kafka cluster. Similarly, the Kafka consumers can upload the image messages up to S3 bucket via AWS SDK. (Similarly, VPC Endpoint will be used)
 
 ### Prepared code for image processing
-For the image processing that requires to be hosted on cloud, we can deploy the code on Lambda. When raw images are sent to the raw-images bucket, Lambda will be triggered by S3 PUT event, process the data and output the processed images and metadata into the processed-images S3 bucket. (we could use 'images/' and 'metadata/' as prefixes in this output data to help with the BI portion later)
+For the image processing that requires to be hosted on cloud, we can deploy the code on Lambda. When raw images are sent to the raw-images bucket, a PUT event notification will be sent to the SQS queue, which in turn triggers the Lambda to process the data and output the processed images and metadata into the processed-images S3 bucket. (we could use 'images/' and 'metadata/' as prefixes in this output data to help with the BI portion later). SQS is used here to help us decouple and control the rate of firing the Lambda to avoid any possible hitting of the max lambda concurrency cap.
 
 Note: If the code that processes the images requires more than 10GB of RAM or more than 15mins of runtime, we would shift over to AWS Fargate instead.
 
