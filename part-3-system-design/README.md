@@ -1,26 +1,42 @@
 # Question 3: System Design
+
 For this section, I will be designing the data infrastructure of the given proposal on AWS Cloud. 
 
+## Table of Contents
+
+- [Project Description](#project-description)
+- [Key Requirements Gathered](#key-requirements-gathered)
+- [Potential Cloud Services](#potential-cloud-services)
+- [Tackling The Requirements](#tackling-the-requirements)
+- [Architect Diagram](#architect-diagram)
+
+## Project Description
+
+For this system design project, I chose to go with AWS Cloud. In the following sections I will first go through the requirements I gathered from the question, followed by services I identified that would be useful for the required data infra, and lastly I will go through my thought process for tackling said requirements.
+
+The architecture diagram can be found in the last section.
+
+
 ## Key Requirements Gathered
-    - Web application 1 (user uploads)
-    - Web application 2 (hosts Kafka stream for image upload)
-    - Code prepared for image processing, requires to be hosted on cloud.
-    - Stored images and metadata in cloud env needs to be purged after 7 days.
-    - Cloud env requires a Business Intel resource for analysts.
+- Web application 1 (user uploads)
+- Web application 2 (hosts Kafka stream for image upload)
+- Code prepared for image processing, requires to be hosted on cloud.
+- Stored images and metadata in cloud env needs to be purged after 7 days.
+- Cloud env requires a Business Intel resource for analysts.
 
-## Potential Services
-    - VPC
-    - EC2
-    - Lambda
-    - Fargate
-    - S3
-    - Glue
-    - Athena
-    - QuickSight
+## Potential Cloud Services
+- VPC
+- EC2
+- Lambda
+- Fargate
+- S3
+- Glue
+- Athena
+- QuickSight
 
-## Tackling the requirements
+## Tackling The Requirements
 ### Web application 1
-An EC2 hosted within a VPC can be used to run the web application, wherein user uploads can be uploaded to an S3 bucket via AWS SDK. (Utilize VPC Endpoint to route directly to the S3 bucket of choice)
+An EC2 hosted within a VPC (along with its subnets, security groups etc.) can be used to run the web application, wherein user uploads can be uploaded to an S3 bucket via AWS SDK. (Utilize VPC Endpoint to route directly to the S3 bucket of choice)
 
 ### Web application 2
 The web application hosting Kafka stream can be set up in another EC2 instance. This will allow the company's engineer who are required to self-manage the Kafka stream to have more control over the Kafka cluster. Similarly, the Kafka consumers can upload the image messages up to S3 bucket via AWS SDK. (Similarly, VPC Endpoint will be used)
@@ -34,7 +50,13 @@ Note: If the code that processes the images requires more than 10GB of RAM or mo
 Given that the raw image data and processed image and metadata exist within S3 buckets, we can simply set an S3 Lifecycle Policy rule to delete the items after 7 days. As it was not specified whether all or only certain data should be purged, we will be purging from all buckets. However if there is a need to delete only some of the data, we can use the S3 bucket prefixes to be more specific.
 
 ### Business Intelligence
-To help the analysts out, we could use Glue, Athena and QuickSight.
-    1. Firstly we can run Glue crawlers to run through the processed data bucket to create tables in the Glue Catalog. Prefixes 'images/' and 'metadata/' might help us organize the data in S3 a little better for the crawlers.
-    2. Athena can be used to queriy the tables created in the Glue Catalog, perform any additional data transformation and create Views.
-    3. QuickSight will utilize the Views from Athena for visualization purposes,
+To help the analysts out, we could use Glue, Athena and QuickSight as the BI resources.
+1. Firstly we can run Glue crawlers to run through the processed data bucket to create tables in the Glue Catalog. Prefixes 'images/' and 'metadata/' might help us organize the data in S3 a little better for the crawlers.
+2. Athena can be used to query the tables created in the Glue Catalog, perform any additional data transformation and create Views.
+3. QuickSight will utilize the Views from Athena for visualization and further analytics purposes.
+
+## Architect Diagram
+![Cloud Data Diagram](architect.png)
+- Image data for processing is retrieved in the Data Ingestion Section.
+- Images are processed in a serverless fashion in the Image Processing Section. S3 buckets have a lifecycle policy of 7 days for scheduled deletion.
+- The stack of Glue, Athena and QuickSight is used as the BI resource within the Analytics Section to help the company's analysts access and perform their analytics on the stored data.
