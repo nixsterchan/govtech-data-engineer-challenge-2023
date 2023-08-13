@@ -7,5 +7,7 @@ CREATE TABLE Members (
     mobile_number VARCHAR(10) NOT NULL,
     date_of_birth VARCHAR(10) NOT NULL,
     above_eighteen BOOLEAN NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW(),
     CONSTRAINT unique_membership_id UNIQUE (membership_id)
 );
