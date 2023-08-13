@@ -1,0 +1,104 @@
+<mxfile host="65bd71144e">
+    <diagram id="JB2kJvLuueZ8NXWABjyU" name="Page-1">
+        <mxGraphModel dx="2769" dy="1010" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="61" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-755" y="50" width="2175" height="1000" as="geometry"/>
+                </mxCell>
+                <mxCell id="56" value="Analytics Section" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#003300;fillColor=none;strokeColor=#003300;dashed=1;dashPattern=12 12;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" vertex="1" parent="1">
+                    <mxGeometry x="331" y="643" width="810" height="390" as="geometry"/>
+                </mxCell>
+                <mxCell id="58" value="Data Ingestion Section" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#003300;fillColor=none;strokeColor=#003300;dashed=1;dashPattern=12 12;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" vertex="1" parent="1">
+                    <mxGeometry x="-527.5" y="90" width="315" height="716" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="S3 PUT Trigger" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;fontColor=#33FFFF;" edge="1" parent="1" source="3" target="6">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="&lt;font color=&quot;#33ffff&quot;&gt;raw-images&lt;/font&gt;" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#60A337;gradientDirection=north;fillColor=#277116;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" vertex="1" parent="1">
+                    <mxGeometry x="37" y="426.5" width="78" height="78" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" value="writes to" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;fontColor=#33FFFF;" edge="1" parent="1" source="6" target="14">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="&lt;font color=&quot;#33ffff&quot;&gt;process-images&lt;/font&gt;" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;" vertex="1" parent="1">
+                    <mxGeometry x="239" y="426.5" width="78" height="78" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="crawls on&lt;br&gt;schedule" style="edgeStyle=none;html=1;fontColor=#33FFFF;" edge="1" parent="1" source="14" target="31">
+                    <mxGeometry x="0.3312" relative="1" as="geometry">
+                        <mxPoint y="1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="14" value="&lt;font color=&quot;#33ffff&quot;&gt;processed-images&lt;/font&gt;" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#60A337;gradientDirection=north;fillColor=#277116;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" vertex="1" parent="1">
+                    <mxGeometry x="439" y="426.5" width="78" height="78" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;fontColor=#33FFFF;" edge="1" parent="1" source="20" target="3">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="-170" y="367"/>
+                            <mxPoint x="-170" y="466"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="20" value="&lt;font color=&quot;#00ffff&quot;&gt;Web Application 1&lt;/font&gt;" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;" vertex="1" parent="1">
+                    <mxGeometry x="-400" y="326.5" width="78" height="78" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="writes to" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;fontColor=#33FFFF;" edge="1" parent="1" source="21" target="3">
+                    <mxGeometry x="0.2381" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="-170" y="543"/>
+                            <mxPoint x="-170" y="466"/>
+                        </Array>
+                        <mxPoint x="-1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="21" value="&lt;font color=&quot;#00ffff&quot;&gt;Web Application 2 (Kafka Server)&lt;/font&gt;" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;" vertex="1" parent="1">
+                    <mxGeometry x="-400" y="504.5" width="78" height="78" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="uploads" style="edgeStyle=none;html=1;fontColor=#33FFFF;" edge="1" parent="1" source="22" target="20">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="&lt;br&gt;&lt;br&gt;User" style="shape=actor;whiteSpace=wrap;html=1;fontColor=#33FFFF;" vertex="1" parent="1">
+                    <mxGeometry x="-730" y="320" width="70" height="91" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" value="updates the&lt;br&gt;catalog" style="edgeStyle=none;html=1;fontColor=#33FFFF;" edge="1" parent="1" source="31" target="34">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="31" value="&lt;font color=&quot;#33ffff&quot;&gt;Crawler&lt;/font&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#4D27AA;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.glue_crawlers;" vertex="1" parent="1">
+                    <mxGeometry x="439" y="663" width="78" height="78" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" value="queries and gets results&lt;br&gt;from S3 data source&lt;br&gt;via Athena&amp;nbsp;" style="edgeStyle=none;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;fontColor=#33FFFF;" edge="1" parent="1" source="32" target="33">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" value="&lt;font color=&quot;#33ffff&quot;&gt;QuickSight&lt;/font&gt;" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#945DF2;gradientDirection=north;fillColor=#5A30B5;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.quicksight;" vertex="1" parent="1">
+                    <mxGeometry x="977" y="898" width="78" height="78" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="query S3 and create&lt;br&gt;views via catalog" style="edgeStyle=none;html=1;fontColor=#33FFFF;" edge="1" parent="1" source="33" target="34">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="&lt;font color=&quot;#33ffff&quot;&gt;Athena&lt;/font&gt;" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#945DF2;gradientDirection=north;fillColor=#5A30B5;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.athena;" vertex="1" parent="1">
+                    <mxGeometry x="697" y="898" width="78" height="78" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="&lt;font color=&quot;#33ffff&quot;&gt;Glue Catalog&lt;/font&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#4D27AA;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.glue_data_catalog;" vertex="1" parent="1">
+                    <mxGeometry x="429" y="883" width="98" height="106.17" as="geometry"/>
+                </mxCell>
+                <mxCell id="40" value="use for BI analytics" style="edgeStyle=none;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;fontColor=#33FFFF;" edge="1" parent="1" source="39" target="32">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="39" value="&lt;br&gt;&lt;br&gt;Analyst" style="shape=actor;whiteSpace=wrap;html=1;fontColor=#33FFFF;" vertex="1" parent="1">
+                    <mxGeometry x="1300" y="890.59" width="70" height="91" as="geometry"/>
+                </mxCell>
+                <mxCell id="48" value="&lt;font color=&quot;#33ffff&quot;&gt;S3 Gateway&lt;/font&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#4D27AA;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.endpoints;" vertex="1" parent="1">
+                    <mxGeometry x="-290" y="420" width="78" height="78" as="geometry"/>
+                </mxCell>
+                <mxCell id="53" value="VPC" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_vpc;strokeColor=#248814;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#AAB7B8;dashed=0;" vertex="1" parent="1">
+                    <mxGeometry x="-490" y="223" width="240" height="440.5" as="geometry"/>
+                </mxCell>
+                <mxCell id="57" value="Image Processing Section" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#003300;fillColor=none;strokeColor=#003300;dashed=1;dashPattern=12 12;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="344" width="540" height="226" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
