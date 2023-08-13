@@ -14,7 +14,11 @@ This section is targeted at building the script required for preprocessing the d
 
 ## Project Description
 
-For this project, the `preprocess.py` script is the main script used for the preprocessing of data based on the requirements given. The `successful-applications` and `failed-applications` folders contain the processed datasets required for submission.
+This project covers the preprocessing task given, and has been broken down into steps I have taken such as the requirements gathering and how I planned to tackle them. Steps have also been prepared for you to take if you will be running the script on your system.
+
+Before proceeding with any setup, please note that for this project, the required answers are the following:
+- `preprocess.py` script (main script used for the preprocessing of data) 
+- `successful-applications/` and `failed-applications/` folders contain the processed datasets
 
 ## Key Requirements Gathered
 
@@ -51,7 +55,7 @@ Steps:
 
 ## Usage
 
-The requirements of this project is to have the processing of data done every hour.
+One of the requirements of this project is to have the processing of data done every hour.
 
 1. Any new data files to be processed are expected to be placed in the `ingestion-data` folder.
 2. Run the preprocessing script hourly: 
@@ -61,6 +65,7 @@ The requirements of this project is to have the processing of data done every ho
     0 * * * * cd </path/to/your/govtech-data-engineer-test/part-1-data-pipelines> && ./run_script.sh
     ```
 3. Processed datasets will be saved in the `successful-applications` and `failed-applications` folders.
+4. Loggings can be found inside logger.log file.
 
 ## Directory Structure
 
@@ -82,3 +87,4 @@ part-1-data-pipelines/
 │ processed_data_file1.csv
 │ processed_data_file2.csv
 ```
+Note: data_file_1 and data_file_2 are just generic names used for example
