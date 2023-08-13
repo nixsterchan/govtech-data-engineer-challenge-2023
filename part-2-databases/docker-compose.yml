@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: task-2-postgresql-container
+    restart: always
+    environment:
+      POSTGRES_USER: ilovebigdata
+      POSTGRES_PASSWORD: andicannotlie
+    ports:
+      - '5432:5432'
+    volumes: 
+      - ./sql-scripts:/docker-entrypoint-initdb.d
