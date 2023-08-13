@@ -1,8 +1,10 @@
 # Question 1: Data Pipelines
 
+This section is targeted at building the script required for preprocessing the data according to the given requirements in the question.
+
 ## Table of Contents
 
-- [Description](#project-description)
+- [Project Description](#project-description)
 - [Key Requirements Gathered](#key-requirements-gathered)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
@@ -10,7 +12,7 @@
 - [Usage](#usage)
 - [Directory Structure](#directory-structure)
 
-## Description
+## Project Description
 
 For this project, the `preprocess.py` script is the main script used for the preprocessing of data based on the requirements given. The `successful-applications` and `failed-applications` folders contain the processed datasets required for submission.
 
