@@ -4,6 +4,7 @@ import argparse
 import logging
 import os
 import hashlib
+import shutil
 from datetime import datetime
 
 logging.basicConfig(
@@ -20,6 +21,9 @@ logger = logging.getLogger(__name__)
 INGESTION_DATA_FOLDER = 'ingestion-data/'
 SUCCESSFUL_APPS_FOLDER = 'successful-applications/'
 FAILED_APPS_FOLDER = 'failed-applications/'
+
+MARKED_FOR_DELETION_FOLDER = 'marked-for-deletion-data/'
+UNPROCESSED_FOLDER = 'unprocessed-data/'
 
 # Validation variables
 DOB_REQUIRED_FORMAT = '%Y%m%d'
@@ -45,31 +49,59 @@ def create_folder(file_path):
     return None
 
 
+def move_source_file(source_path, destination_path):
+    """
+    Helper function to move files that pass/failed the processing to the marked-for-deletion/unprocessed folder.
+
+    Args:
+        source_path (string): source of the file to process
+        destination_path (string): destination for the unprocessed file
+    
+    Return:
+        None
+    """
+    try:
+        shutil.move(source_path, destination_path)
+        logger.info(f"File '{source_path}' moved successfully!")
+    except FileNotFoundError:
+        logger.error("Source file not found.")
+    except Exception as e:
+        logger.error(f"An error occurred: {e}")
+
+    return None
+
+
 def main():
     logger.info('Beginning file processing.')
 
     # Create output folders if non-existent
-    for f_path in [SUCCESSFUL_APPS_FOLDER, FAILED_APPS_FOLDER]:
+    for f_path in [SUCCESSFUL_APPS_FOLDER, FAILED_APPS_FOLDER, UNPROCESSED_FOLDER, MARKED_FOR_DELETION_FOLDER]:
         create_folder(f_path)
 
     # Retrieve list of csv files to be processed 
     csv_file_names = [file for file in os.listdir(INGESTION_DATA_FOLDER) if file.endswith('.csv')]
 
     for f_name in csv_file_names:
-        f_path = os.path.join(INGESTION_DATA_FOLDER, f_name)
-        logger.info(f'Working on file: {f_path}')
+        src_path = os.path.join(INGESTION_DATA_FOLDER, f_name)
+        logger.info(f'Working on file: {src_path}')
 
         # Output file paths
         success_out_path = os.path.join(SUCCESSFUL_APPS_FOLDER, f'processed_{f_name}')
         failed_out_path = os.path.join(FAILED_APPS_FOLDER, f'processed_{f_name}')
-
+        unprocessed_out_path = os.path.join(UNPROCESSED_FOLDER, f_name)
+        marked_for_del_out_path = os.path.join(MARKED_FOR_DELETION_FOLDER, f_name)
+    
         try:
-            df = pd.read_csv(f_path, header=0, index_col=False)
+            df = pd.read_csv(src_path, header=0, index_col=False)
             logger.info(f'Dataframe shape: {df.shape}.')
+
+            if df.shape[0] == 0: continue
+            
         except Exception as e:
             logger.error(f'Ran into an issue while attempting to read dataframe.\n{e}\nMoving to next file.')
+            move_source_file(src_path, unprocessed_out_path)
+            continue
 
-        if df.shape[0] == 0: continue
 
         # Perform preprocessing tasks
         try:
@@ -105,7 +137,9 @@ def main():
 
         except Exception as e:
             logger.error(f'Ran into an issue while processing present dataframe.\n{e}\nMoving to next file.')
-        
+            move_source_file(src_path, unprocessed_out_path)
+            continue
+
         # Write out the success and failed dataframes
         try:
             df_success.to_csv(success_out_path, header=True, index=False)
@@ -114,7 +148,12 @@ def main():
             logger.info(f'Success and failed application dataframes were successfully written out.')
         except Exception as e:
             logger.error(f'Ran into an issue while writing out success and failed dataframes.\n{e}\nMoving to next file.')
-        
+            move_source_file(src_path, unprocessed_out_path)
+            continue
+
+        # If successfully run, we move the file out of the source ingestion bucket to a bucket marked for deletion.
+        move_source_file(src_path, marked_for_del_out_path)
+
     return None
 
 if __name__ == "__main__":
