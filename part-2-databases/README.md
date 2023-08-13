@@ -68,3 +68,4 @@ TransactionItems
 - Members has a one is to many relationship with Transactions table.
 - Transactions has a many to many relationship with Items, with TransactionItems table being the junction table.
 - Fields created_at and updated_at were added for any audit purposes.
+- For updated_at fields, it is assumed that the updating of these fields will be done by the application uploading data.
