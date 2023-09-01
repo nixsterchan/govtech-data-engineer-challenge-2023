@@ -1,4 +1,4 @@
-# Govtech Data Engineer Test 2023
+# Govtech Data Engineer Tech Challenge 2023
 
 ## Brief Overview
 Greetings and welcome to Nixster's test submission! As there were 3 parts to this test, I decided to split them up into their own subfolders. For part 1 and part 2, make sure to cd into those folders before running any of the instructions found in their respective markdown files!
